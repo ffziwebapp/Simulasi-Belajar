@@ -1,0 +1,48 @@
+/* Butir traits tambahan. Setiap simulasi mengambil 5 butir per dimensi + 1 soal situasional per dimensi. */
+LIKERT.push(
+  ["Saya melaporkan kesalahan nilai yang menguntungkan saya kepada penyelenggara.","integ",0],
+  ["Memakai kode orang lain tanpa izin atau atribusi bukan masalah besar.","integ",1],
+  ["Saya bersikap sama, baik saat diawasi maupun tidak.","integ",0],
+  ["Melebih-lebihkan pengalaman di CV itu wajar agar lolos seleksi.","integ",1],
+  ["Saya menolak ajakan bekerja sama saat ujian individu.","integ",0],
+  ["Saya memastikan pembagian tugas tim jelas sejak awal proyek.","collab",0],
+  ["Saya kurang peduli pada hasil anggota tim lain selama bagian saya selesai.","collab",1],
+  ["Saya memberi masukan pada pekerjaan teman dengan cara yang sopan dan membangun.","collab",0],
+  ["Saya senang berbagi catatan atau sumber belajar dengan teman.","collab",0],
+  ["Saya sulit menerima keputusan tim jika berbeda dari pendapat saya.","collab",1],
+  ["Saya menikmati tantangan yang memaksa saya mempelajari hal baru.","growth",0],
+  ["Saya menghindari tugas yang berisiko membuat saya terlihat tidak mampu.","growth",1],
+  ["Setelah gagal, saya menganalisis penyebabnya lalu mencoba dengan cara berbeda.","growth",0],
+  ["Kritik terhadap hasil kerja saya membuat saya enggan mencoba lagi.","growth",1],
+  ["Saya percaya kemampuan saya bisa meningkat lewat latihan yang konsisten.","growth",0],
+  ["Saya membuat jadwal belajar dan berusaha menaatinya.","resp",0],
+  ["Saya cenderung meninggalkan tugas yang membosankan sebelum selesai.","resp",1],
+  ["Saya memeriksa ulang pekerjaan sebelum mengumpulkannya.","resp",0],
+  ["Saya sering lupa tenggat tugas jika tidak diingatkan orang lain.","resp",1],
+  ["Saya tetap menyelesaikan komitmen meski motivasi sedang turun.","resp",0],
+  ["Saya cepat menyesuaikan diri ketika prioritas pekerjaan berubah.","adapt",0],
+  ["Perubahan rencana mendadak membuat saya sulit bekerja dengan baik.","adapt",1],
+  ["Saya terbuka mencoba cara kerja baru yang diusulkan orang lain.","adapt",0],
+  ["Saya lebih suka bertahan dengan cara lama walaupun ada cara yang lebih efisien.","adapt",1],
+  ["Saya bisa belajar mandiri ketika materi atau arahan terbatas.","adapt",0],
+  ["Saya menyampaikan pendapat dengan jelas dalam diskusi kelompok.","comm",0],
+  ["Saya memberi kabar kepada tim jika pekerjaan saya akan terlambat.","comm",0],
+  ["Saya lebih memilih diam daripada bertanya ketika bingung.","comm",1],
+  ["Saya menyesuaikan cara menjelaskan sesuai latar belakang pendengar.","comm",0],
+  ["Pesan atau laporan saya sering membuat orang lain salah paham.","comm",1]
+);
+
+SJT.push(
+  {q:"Kamu menemukan bahwa skor tes latihanmu tercatat lebih tinggi dari seharusnya karena kesalahan sistem. Apa yang kamu lakukan?",
+   o:["Membiarkannya karena itu bukan kesalahanmu","Melaporkan kesalahan itu kepada penyelenggara","Menceritakannya ke teman agar mereka mencoba hal yang sama","Menunggu apakah ada yang menyadarinya"],s:[0,3,0,1],d:"integ"},
+  {q:"Anggota tim mengusulkan pendekatan yang berbeda dari rencanamu, dan pendekatannya tampak cukup masuk akal. Apa yang kamu lakukan?",
+   o:["Tetap memakai rencanamu karena kamu yang mengusulkan lebih dulu","Mendiskusikan kelebihan dan kekurangan keduanya lalu memilih bersama","Menyerahkan semua keputusan kepadanya agar tidak ada konflik","Mengerjakan versimu sendiri secara diam-diam"],s:[0,3,1,0],d:"collab"},
+  {q:"Kamu gagal di tahap seleksi sebuah program yang sangat kamu inginkan. Langkah terbaikmu adalah…",
+   o:["Menyimpulkan bahwa bidang itu memang bukan untukmu","Mencari tahu bagian yang lemah, belajar, lalu mencoba lagi di kesempatan berikutnya","Menyalahkan sistem seleksi yang tidak adil","Berhenti belajar selama beberapa bulan"],s:[0,3,0,0],d:"growth"},
+  {q:"Kamu sudah berjanji menyelesaikan modul belajar minggu ini, tetapi ada acara mendadak. Apa yang kamu lakukan?",
+   o:["Melewatkan modul tanpa rencana pengganti","Menyusun ulang jadwal agar modul tetap selesai, misalnya mencicil di waktu luang","Menyalin rangkuman teman tanpa belajar","Menunda semuanya ke minggu depan"],s:[0,3,0,1],d:"resp"},
+  {q:"Mentor mendadak meminta proyek dikerjakan memakai framework yang belum pernah kamu gunakan, dengan tenggat dua minggu. Respons terbaikmu adalah…",
+   o:["Meminta tetap memakai framework yang kamu kuasai","Membuat rencana belajar singkat, mencoba contoh kecil, lalu bertanya saat buntu","Menunggu tutorial lengkap dari mentor","Mengerjakan dengan framework lama diam-diam"],s:[1,3,1,0],d:"adapt"},
+  {q:"Saat presentasi proyek, penguji menanyakan hal yang tidak kamu ketahui. Apa yang kamu lakukan?",
+   o:["Mengarang jawaban agar terlihat menguasai","Mengakui belum tahu, menjelaskan apa yang kamu pahami, dan berjanji mencari jawabannya","Mengalihkan pembicaraan ke topik lain","Menyerahkan pertanyaan kepada teman tanpa koordinasi"],s:[0,3,1,0],d:"comm"}
+);

@@ -5,7 +5,7 @@ Situs statis untuk persiapan tes seleksi **Pijak 2027 in collaboration with IBM 
 ## Isi
 
 - **Modul materi** (7 bab, sekitar 13.000 kata): strategi tes, Logical Reasoning & Computational Thinking, Programming Fundamentals, Data & System Foundations, Frontend, Backend, dan Traits Assessment. Setiap bab berisi teori, tabel ringkas, contoh kode, contoh soal dengan pembahasan, dan ringkasan cepat.
-- **Simulasi tes**: 6 blok (5 × 10 menit Technical + 20 menit Traits) dengan blok waktu terkunci, bank 105 soal teknis dan 36 butir traits, pembahasan lengkap, profil traits, dan skor konsistensi.
+- **Simulasi tes**: 6 blok (5 × 10 menit Technical + 20 menit Traits) dengan blok waktu terkunci, bank 205 soal teknis (41 per blok) ditambah generator soal yang angkanya diacak setiap kali dibuat, serta 60 butir Likert dan 12 soal situasional untuk Traits. Setiap blok mengambil soal yang paling lama tidak muncul, jadi beberapa kali simulasi berturut-turut tidak mengulang soal yang sama. Hasil dilengkapi pembahasan, profil traits, dan skor konsistensi.
 - **Jadwal belajar 28 hari** dengan checklist yang tersimpan di browser.
 - **Sumber belajar tambahan**: kursus, dokumentasi, dan latihan gratis per topik.
 
@@ -19,6 +19,9 @@ css/style.css
 js/app.js             ← routing, modul, jadwal, sumber, mesin simulasi
 js/bank.js            ← bank soal utama
 js/bank-tambahan.js   ← soal tambahan
+js/bank-tambahan-2.js ← soal tambahan ke-2
+js/generator.js       ← generator soal berangka acak
+js/traits-tambahan.js ← butir traits tambahan
 js/jadwal.js          ← data jadwal 28 hari
 js/sumber.js          ← daftar sumber eksternal
 js/modul/*.js         ← isi setiap bab (Markdown)

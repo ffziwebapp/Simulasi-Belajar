@@ -282,15 +282,48 @@ function pageSumber(){
    SIMULASI
    ========================================================= */
 const blockName = k => k==="traits" ? "Traits Assessment" : BANK[k].name;
+/* ---------- rotasi soal: yang paling lama tidak muncul diprioritaskan ---------- */
+const GEN_PER_BLOCK = 3;   // jumlah soal dengan angka acak per blok teknis
+function qid(text){ let h=5381; for(let i=0;i<text.length;i++) h=((h<<5)+h+text.charCodeAt(i))|0; return (h>>>0).toString(36); }
+function leastSeen(items, idOf, n){
+  const seen = store.get("seen",{});
+  return items.map(it=>({it, s:seen[idOf(it)]||0, r:Math.random()}))
+              .sort((a,b)=>a.s-b.s || a.r-b.r).slice(0,n).map(x=>x.it);
+}
+function markSeen(ids){
+  const seen = store.get("seen",{}), t = store.get("seenT",0)+1;
+  ids.forEach(id=>seen[id]=t);
+  store.set("seen",seen); store.set("seenT",t);
+}
+const techId = q => qid(q.q + "|" + (q.code||"") + "|" + q.o.join("|"));
+
 function buildBlock(p){
   if(p.type==="tech"){
     const b = BANK[p.key];
-    const qs = shuffle(b.qs).slice(0,b.take).map(q=>({...q, order:shuffle(q.o.map((_,i)=>i)), ans:null, flag:false}));
+    const gens = (window.GEN && GEN[p.key]) || [];
+    const nGen = Math.min(GEN_PER_BLOCK, gens.length);
+    const fromBank = leastSeen(b.qs, techId, b.take - nGen);
+    const generated = shuffle(gens).slice(0, nGen).map(g=>{ try{ return g(); }catch(e){ return null; } }).filter(Boolean);
+    const extra = generated.length < nGen ? leastSeen(b.qs.filter(q=>!fromBank.includes(q)), techId, nGen-generated.length) : [];
+    markSeen([...fromBank, ...extra].map(techId));
+    const qs = shuffle([...fromBank, ...extra, ...generated]).map(q=>({...q, order:shuffle(q.o.map((_,i)=>i)), ans:null, flag:false}));
     return {...p, name:b.name, qs};
   }
-  const lk = shuffle(LIKERT).map(([t,d,r])=>({kind:"likert",q:t,d,r,ans:null,flag:false}));
-  const sj = SJT.map(x=>({kind:"sjt",...x,order:shuffle(x.o.map((_,i)=>i)),ans:null,flag:false}));
-  return {...p, name:"Traits Assessment", qs:[...lk,...sj]};
+  // traits: 5 butir per dimensi (minimal 1 positif & 1 terbalik) + 1 soal situasional per dimensi
+  const lid = x => "L" + qid(x[0]), sid = x => "S" + qid(x.q);
+  const lk = [];
+  Object.keys(DIMS).forEach(d=>{
+    const pool = LIKERT.filter(x=>x[1]===d);
+    const pos = leastSeen(pool.filter(x=>!x[2]), lid, 1), neg = leastSeen(pool.filter(x=>x[2]), lid, 1);
+    const rest = leastSeen(pool.filter(x=>!pos.includes(x)&&!neg.includes(x)), lid, 3);
+    lk.push(...pos, ...neg, ...rest);
+  });
+  const sj = Object.keys(DIMS).map(d=>leastSeen(SJT.filter(x=>x.d===d), sid, 1)[0]).filter(Boolean);
+  markSeen([...lk.map(lid), ...sj.map(sid)]);
+  return {...p, name:"Traits Assessment", qs:[
+    ...shuffle(lk).map(([t,d,r])=>({kind:"likert",q:t,d,r,ans:null,flag:false})),
+    ...shuffle(sj).map(x=>({kind:"sjt",...x,order:shuffle(x.o.map((_,i)=>i)),ans:null,flag:false}))
+  ]};
 }
 
 function pageSim(){
@@ -302,7 +335,7 @@ function pageSim(){
   <div class="grid g2 mt">
     <button class="mode" id="full"><span class="tag">Disarankan</span><b>Simulasi Penuh · 70 menit</b><span class="muted small">Keenam blok berurutan, waktu berjalan, blok terkunci. Hasil dan pembahasan lengkap ditampilkan di akhir.</span></button>
     <div class="mode" style="cursor:default"><b>Latihan per Blok</b><span class="muted small">Pilih satu blok untuk dilatih. Timer tetap berjalan.</span>
-      <div class="blocklist">${PLAN.map((p,i)=>`<button class="blk" data-i="${i}"><b>${esc(blockName(p.key))}</b><small>${p.min} menit · ${p.type==="tech"?BANK[p.key].take+" soal acak dari "+BANK[p.key].qs.length:"36 pernyataan"}</small></button>`).join("")}</div>
+      <div class="blocklist">${PLAN.map((p,i)=>`<button class="blk" data-i="${i}"><b>${esc(blockName(p.key))}</b><small>${p.min} menit · ${p.type==="tech"?BANK[p.key].take+" soal dari "+BANK[p.key].qs.length+" + soal angka acak":"36 butir dari "+(LIKERT.length+SJT.length)}</small></button>`).join("")}</div>
     </div>
   </div>
   <div class="grid g2 mt">
